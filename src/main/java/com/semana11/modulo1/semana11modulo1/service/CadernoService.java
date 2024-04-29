@@ -14,29 +14,29 @@ public class CadernoService {
     private final CadernoRepository cadernoRepository;
 
 
-    public Caderno salvar(Caderno caderno){
+    public Caderno salvar(String token, Caderno caderno){
         cadernoRepository.save(caderno);
         return caderno;
     }
 
-    public Caderno buscaId(Long id){
+    public Caderno buscaId(String token,Long id){
         Caderno caderno = cadernoRepository.findById(id).orElseThrow(() -> new RuntimeException(" caderno nao encontrado"));
         return caderno;
     }
 
-    public List<Caderno> buscaTodos(){
+    public List<Caderno> buscaTodos(String token){
         return cadernoRepository.findAll();
     }
 
-    public Caderno atualizar(Caderno caderno){
+    public Caderno atualizar(String token,Caderno caderno){
         if(caderno.getId() == null){
             throw new IllegalArgumentException("O ID do caderno não pode ser nulo para atualização.");
         }
         return cadernoRepository.save(caderno);
     }
 
-    public void deletar(Long id){
-        Caderno caderno = buscaId(id);
+    public void deletar(String token, Long id){
+        Caderno caderno = buscaId(token, id);
         cadernoRepository.delete(caderno);
     }
 }

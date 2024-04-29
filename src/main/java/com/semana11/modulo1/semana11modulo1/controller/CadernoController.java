@@ -20,34 +20,34 @@ public class CadernoController {
     }
 
     @PostMapping
-    public ResponseEntity<Caderno> criarCaderno(@RequestBody Caderno caderno) {
-        Caderno novoCaderno = cadernoService.salvar(caderno);
+    public ResponseEntity<Caderno> criarCaderno( @RequestHeader(name = "Authorization") String token ,@RequestBody Caderno caderno) {
+        Caderno novoCaderno = cadernoService.salvar(token.substring(7), caderno);
         return ResponseEntity.ok(novoCaderno);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Caderno> buscarCadernoPorId(@PathVariable Long id) {
-        Caderno caderno = cadernoService.buscaId(id);
+    public ResponseEntity<Caderno> buscarCadernoPorId(@RequestHeader(name = "Authorization") String token ,@PathVariable Long id) {
+        Caderno caderno = cadernoService.buscaId(token.substring(7), id);
         return ResponseEntity.ok(caderno);
     }
 
     @GetMapping
-    public ResponseEntity<List<Caderno>> buscarTodosCadernos() {
-        List<Caderno> cadernos = cadernoService.buscaTodos();
+    public ResponseEntity<List<Caderno>> buscarTodosCadernos(@RequestHeader(name = "Authorization") String token) {
+        List<Caderno> cadernos = cadernoService.buscaTodos(token.substring(7));
         return ResponseEntity.ok(cadernos);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Caderno> atualizarCaderno(@PathVariable Long id, @RequestBody Caderno cadernoAtualizado) {
+    public ResponseEntity<Caderno> atualizarCaderno(@RequestHeader(name = "Authorization") String token , @PathVariable Long id, @RequestBody Caderno cadernoAtualizado) {
         cadernoAtualizado.setId(id);
-        Caderno caderno = cadernoService.atualizar(cadernoAtualizado);
+        Caderno caderno = cadernoService.atualizar(token.substring(7),cadernoAtualizado);
         return ResponseEntity.ok(caderno);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarCaderno(@PathVariable Long id) {
-        cadernoService.deletar(id);
+    public ResponseEntity<Void> deletarCaderno(@RequestHeader(name = "Authorization") String token , @PathVariable Long id) {
+        cadernoService.deletar(token.substring(7),id);
         return ResponseEntity.noContent().build();
     }
 }
